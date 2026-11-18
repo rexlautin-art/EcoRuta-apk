@@ -1,0 +1,23 @@
+name: Compilar EcoRuta APK y Panel
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Copiar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Compilar y empaquetar
+        run: |
+          echo "Preparando entorno de compilacion para EcoRuta..."
+          dir
