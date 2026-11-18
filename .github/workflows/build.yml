@@ -17,16 +17,16 @@ jobs:
         with:
           node-version: 18
 
-      - name: Compilar Panel de PC
+      - name: Instalar y Compilar Panel
         run: |
           cd panel
           npm install
           npm run build
 
-      - name: Guardar Archivos Generados
+      - name: Subir Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: EcoRuta-Archivos-Nuevos
+          name: EcoRuta-Actualizado
           path: |
             panel/dist/
             celular/
