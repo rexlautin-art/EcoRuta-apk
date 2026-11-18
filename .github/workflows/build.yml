@@ -17,7 +17,16 @@ jobs:
         with:
           node-version: 18
 
-      - name: Compilar y empaquetar
+      - name: Compilar Panel de PC
         run: |
-          echo "Preparando entorno de compilacion para EcoRuta..."
-          dir
+          cd panel
+          npm install
+          npm run build
+
+      - name: Guardar Archivos Generados
+        uses: actions/upload-artifact@v4
+        with:
+          name: EcoRuta-Archivos-Nuevos
+          path: |
+            panel/dist/
+            celular/
