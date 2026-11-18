@@ -1,0 +1,41 @@
+ECORUTA ADMIN - APP DE ESCRITORIO
+
+1) Haz doble clic en INSTALAR.bat (solo la primera vez).
+   - Instala Node.js si falta, las dependencias y compila la app.
+   - Crea el icono "EcoRuta" en el escritorio y en el menu Inicio.
+   - Abre la app en su propia ventana.
+2) Desde ahora abre EcoRuta con el icono del escritorio.
+   Con clic derecho en el icono de la barra de tareas: "Anclar a la barra de tareas".
+3) Para apagar el servidor de fondo: scripts\DETENER-EcoRuta.bat
+
+IMPORTANTE: no muevas ni borres esta carpeta despues de instalar.
+Si la quieres en otro lugar (ej. C:\EcoRuta), muevela ANTES y vuelve a ejecutar INSTALAR.bat.
+
+----------------------------------------------
+CREAR UN INSTALADOR TIPO "SETUP.EXE"
+Haz doble clic en CREAR-INSTALADOR.bat (acepta el permiso de administrador).
+Al terminar se abre la carpeta "release" con EcoRuta-Setup-1.0.0.exe.
+Ese .exe es el instalador: lo ejecutas, eliges la carpeta y se instala
+con icono en el escritorio, menu Inicio y desinstalador.
+
+
+----------------------------------------------
+NUEVO: PESTANA "ENVIAR" (APP EMISORA)
+La app ya no solo muestra datos: ahora ENVIA avisos, rutas, textos, imagenes, archivos y paginas al celular
+a traves del puente (el servidor de la app del celular, iniciar_ecoruta). Contrato en contrato/protocolo.md.
+Para ver el cambio hay que volver a compilar: INSTALAR.bat o CREAR-INSTALADOR.bat (genera EcoRuta-Setup-1.1.0.exe).
+El EcoRuta-Setup-1.0.0.exe anterior NO incluye la pestana Enviar.
+
+
+----------------------------------------------
+VERSION 1.2.0: LIENZO EN BLANCO
+El panel arranca SIN datos de ejemplo (rutas, usuarios, camiones, alertas y metricas vacios) y no guarda nada al cerrar.
+Todo lo que aparece lo crea o edita la persona. 'Vaciar todo (en blanco)' en Conexion limpia la sesion.
+Los datos de ejemplo siguen en src/data/mockData.ts (sin usarse) por si algun dia se quieren recuperar.
+
+
+----------------------------------------------
+VERSION 1.3.0: CONECTAR CELULARES (ENLACE POR INTERNET)
+En Enviar hay una seccion nueva "Conectar celulares": muestra el enlace por internet del puente, crea codigos (ECO-XXXX-XXXX),
+copia el mensaje para WhatsApp y desactiva codigos. Para que haya enlace por internet abre el puente con iniciar_ecoruta_internet
+(carpeta de la app del celular, version 2.4.0). Hay que volver a compilar (INSTALAR.bat o CREAR-INSTALADOR.bat -> EcoRuta-Setup-1.3.0.exe).

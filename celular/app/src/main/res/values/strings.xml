@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">EcoRuta</string>
+
+    <string name="back_hint">Pulsa otra vez para salir</string>
+
+    <string name="webview_title">Falta actualizar el WebView</string>
+    <string name="webview_message">Tu teléfono usa una versión antigua del componente que muestra la app (%1$d). EcoRuta necesita la versión %2$d o más nueva. Actualiza «Android System WebView» (o Google Chrome) desde Google Play y vuelve a abrir la app.</string>
+    <string name="webview_update">Abrir Google Play</string>
+    <string name="webview_continue">Intentar abrir de todos modos</string>
+
+    <string name="tracking_channel">Seguimiento del camión</string>
+    <string name="tracking_title">EcoRuta: ruta activa</string>
+    <string name="tracking_text">Compartiendo la ubicación del camión con los ciudadanos</string>
+    <string name="tracking_stop">Detener</string>
+    <string name="tracking_pin_bad">PIN incorrecto: los ciudadanos NO ven el camión</string>
+</resources>

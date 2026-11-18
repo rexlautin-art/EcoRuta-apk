@@ -1,0 +1,36 @@
+ENLACE POR INTERNET (version 2.4.0) - el celular recibe desde CUALQUIER red
+1) En el PC abre iniciar_ecoruta_internet (en vez de iniciar_ecoruta). La primera vez descarga cloudflared (Windows/Linux);
+   en Mac: brew install cloudflared. En la ventana aparece un enlace https://....trycloudflare.com
+2) En la app del PC (EcoRuta Admin) -> Enviar -> "Conectar celulares" -> "Crear codigo" (ECO-XXXX-XXXX).
+   Pulsa "Copiar mensaje" y mandalo por WhatsApp a quien deba recibir los avisos.
+3) En el celular, al abrir la app por primera vez sale un tutorial de 3 pasos. En el ultimo se pega el mensaje: enlace y codigo se
+   llenan solos. Se pulsa "Conectar". (Despues: boton "Conexion" en el panel de mensajes, o el chip "Conectar con la central".)
+4) Para sacar a alguien: "Desactivar" el codigo en el panel. Esos celulares dejan de recibir y la app les avisa.
+Notas:
+- Con enlace "rapido" (sin dominio) la direccion CAMBIA cada vez que reinicias EcoRuta. El codigo sigue valiendo: manda otra vez el
+  mensaje y el celular se reconecta sin gastar cupo. Para direccion fija: tunel con nombre (config.json: "tunnel":"named",
+  "tunnelToken":"...", "publicUrl":"https://ecoruta.tudominio.com").
+- El PC debe estar encendido y con la ventana abierta para que los celulares reciban.
+- Sin PIN, desde internet nadie puede publicar camiones ni mensajes (solo tu, desde el PC). Si los conductores publican por internet,
+  pon "pin" en servidor/config.json.
+- Pruebas: node servidor/prueba_vinculo.cjs  y  node servidor/prueba_celular.cjs
+
+COMO FUNCIONA EL ENVIO (EMISORA -> PUENTE -> RECEPTORA)
+
+1) En el PC, abre el PUENTE: doble clic en iniciar_ecoruta.bat (Windows) o iniciar_ecoruta.sh.
+   Deja esa ventana abierta. Muestra la direccion para el celular (ej. http://192.168.1.20:3000). Solo sirve en la misma Wi-Fi: para otras redes usa el ENLACE POR INTERNET de arriba.
+   Para exigir PIN al enviar: servidor/config.json -> "pin".
+2) En el PC, abre la app EMISORA ("EcoRuta Admin"), pestana "Enviar".
+   Direccion del puente: http://localhost:3000   (y el PIN si lo configuraste).
+3) En el celular, app EcoRuta -> Ajustes -> Servidor: escribe la direccion del paso 1.
+   Dentro de la app aparece el boton del sobre (abajo a la derecha). La app descarga los mensajes una vez cada 24 h
+   (o al tocar 'Actualizar ahora'), los guarda en el celular y los borra 24 h despues de recibirlos.
+
+Pruebas automaticas del puente:  node servidor/prueba_puente.cjs   (y node servidor/prueba_servidor.cjs)
+
+LIMITES CONOCIDOS
+- La app del celular solo descarga cuando esta abierta (revisa cada minuto si ya toca). Recibir con la app cerrada requiere notificaciones push.
+- Guardar archivos ("Descargar") funciona en el navegador; en la APK el WebView actual no maneja descargas y
+  haria falta un metodo nativo de guardado en NativeBridge.java. Avisos, rutas, textos, imagenes y paginas se
+  muestran sin problema.
+- El PIN viaja sin cifrar en http:// (Wi-Fi local). Si el puente va a internet, usa HTTPS.

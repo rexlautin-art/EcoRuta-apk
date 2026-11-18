@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mismo tema pero oscuro: evita el destello blanco al abrir la app en un telefono con modo oscuro. -->
+    <style name="Theme.EcoRuta" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#101512</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

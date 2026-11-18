@@ -1,0 +1,6 @@
+{
+  "name": "EcoRuta Admin · Panel de Control",
+  "description": "Panel de control operativo en tiempo real para la gestión de rutas ecológicas, flota de recolectores, puntos de acopio e incidencias de EcoRuta (com.ecoruta.libano).",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

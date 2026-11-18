@@ -1,0 +1,56 @@
+Horarios de ejemplo que traia el calendario (arreglo 'dl' en app.legible.js) antes de la version 2.2.0.
+Para recuperarlos, pegalos otra vez en lugar de 'dl = []'.
+
+[
+      {
+        id: "v",
+        frac: "verde",
+        days: [1, 4],
+        dayLabel: "Lunes y jueves",
+        name: "Org\xE1nicos aprovechables",
+        bag: "Bolsa verde",
+        time: "6:00 \u2013 11:30",
+        accepts: [
+          "C\xE1scaras de fruta y verdura",
+          "Borra, pulpa y pasilla de caf\xE9",
+          "Sobras de comida",
+          "Hojas y podas peque\xF1as",
+          "C\xE1scaras de huevo",
+        ],
+        tip: "Sin bolsas pl\xE1sticas, grapas ni l\xEDquidos para que sirva en compostaje.",
+      },
+      {
+        id: "b",
+        frac: "blanca",
+        days: [2, 5],
+        dayLabel: "Martes y viernes",
+        name: "Aprovechables secos",
+        bag: "Bolsa blanca",
+        time: "6:30 \u2013 12:00",
+        accepts: [
+          "Botellas PET aplastadas",
+          "Cart\xF3n seco y desarmado",
+          "Latas enjuagadas",
+          "Papel de archivo y peri\xF3dico",
+          "Frascos de vidrio",
+        ],
+        tip: "Limpio y seco. Entrega aparte el vidrio roto, envuelto y rotulado.",
+      },
+      {
+        id: "n",
+        frac: "negra",
+        days: [3, 6],
+        dayLabel: "Mi\xE9rcoles y s\xE1bados",
+        name: "No aprovechables",
+        bag: "Bolsa negra",
+        time: "6:00 \u2013 11:00",
+        accepts: [
+          "Papel higi\xE9nico y servilletas usadas",
+          "Cart\xF3n grasoso",
+          "Colillas apagadas",
+          "Pa\xF1ales y toallas higi\xE9nicas",
+          "Empaques metalizados",
+        ],
+        tip: "Cierra con doble nudo para que los animales no la rompan.",
+      },
+    ]

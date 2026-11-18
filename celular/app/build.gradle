@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.ecoruta.libano'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.ecoruta.libano'   // cambialo si quieres otro nombre de paquete
+        minSdk 24
+        targetSdk 36
+        versionCode 6
+        versionName '2.4.0'
+    }
+
+    // Llave fija (ecoruta.keystore, en la raiz): asi cada APK nueva se instala ENCIMA de la anterior sin desinstalar.
+    def ks = file('../ecoruta.keystore')
+    if (ks.exists()) {
+        signingConfigs {
+            ecoruta {
+                storeFile ks
+                storePassword 'ecoruta2026'
+                keyAlias 'ecoruta'
+                keyPassword 'ecoruta2026'
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            if (ks.exists()) signingConfig signingConfigs.ecoruta
+        }
+        release {
+            if (ks.exists()) signingConfig signingConfigs.ecoruta
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.15.0'
+}
