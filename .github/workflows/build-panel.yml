@@ -1,0 +1,47 @@
+name: Compilar panel del PC (.exe)
+
+on:
+  push:
+    branches: [main]
+    paths: ['panel/**', '.github/workflows/build-panel.yml']
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  exe:
+    name: Crear instalador de Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: panel
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Compilar la web del panel
+        run: npx vite build
+
+      - name: Crear el instalador
+        run: npx electron-builder --win --x64 --publish never
+
+      - name: Guardar el instalador (pestaña Actions > Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EcoRuta-Panel-Windows
+          path: panel/release/*.exe
+
+      - name: Adjuntar el instalador a la Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: panel/release/*.exe

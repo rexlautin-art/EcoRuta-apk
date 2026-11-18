@@ -1,0 +1,111 @@
+name: Compilar APK del celular y paquete del puente
+
+# Se ejecuta: (1) al subir cambios de la carpeta celular, (2) a mano desde la pestaña Actions,
+# (3) al publicar una Release (entonces adjunta los archivos a esa Release).
+on:
+  push:
+    branches: [main]
+    paths: ['celular/**', '.github/workflows/build-apk.yml']
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write   # necesario para adjuntar archivos a la Release
+
+jobs:
+  pruebas:
+    name: Pruebas del puente
+    runs-on: ubuntu-latest
+    continue-on-error: true   # si una prueba falla, igual se compila la APK
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Correr las pruebas
+        working-directory: celular
+        run: |
+          for t in prueba_servidor prueba_puente prueba_vinculo prueba_celular; do
+            echo "=== $t ==="
+            node servidor/$t.cjs
+          done
+
+  apk:
+    name: Compilar APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Instalar Android SDK y aceptar licencias
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.11.1
+
+      - name: Compilar la APK
+        working-directory: celular
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Poner nombre claro a la APK
+        run: |
+          mkdir -p salida
+          cp celular/app/build/outputs/apk/debug/app-debug.apk salida/EcoRuta.apk
+          ls -la salida
+
+      - name: Guardar la APK (pestaña Actions > Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EcoRuta-APK
+          path: salida/EcoRuta.apk
+
+      - name: Adjuntar la APK a la Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: salida/EcoRuta.apk
+
+  puente:
+    name: Empaquetar el puente (servidor del PC)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Armar la carpeta EcoRuta-puente
+        run: |
+          mkdir -p salida/EcoRuta-puente
+          cp -r celular/servidor salida/EcoRuta-puente/servidor
+          rm -rf salida/EcoRuta-puente/servidor/datos salida/EcoRuta-puente/servidor/bin salida/EcoRuta-puente/servidor/config.json
+          cp -r celular/app/src/main/assets/web salida/EcoRuta-puente/servidor/web
+          cp -r celular/contrato salida/EcoRuta-puente/contrato
+          cp celular/iniciar_ecoruta.bat celular/iniciar_ecoruta_internet.bat celular/iniciar_ecoruta.sh celular/iniciar_ecoruta_internet.sh salida/EcoRuta-puente/
+          cp celular/contrato/LEEME-PUENTE.txt salida/EcoRuta-puente/LEEME.txt
+          cd salida && zip -qr EcoRuta-puente.zip EcoRuta-puente && ls -la
+
+      - name: Probar que el puente arranca desde el paquete
+        run: |
+          cd salida/EcoRuta-puente
+          (PORT=3950 node servidor/server.cjs > /tmp/puente.log 2>&1 &)
+          sleep 3
+          curl -sf http://127.0.0.1:3950/api/ping
+          echo
+          curl -sf http://127.0.0.1:3950/ | head -c 120
+          echo
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EcoRuta-puente
+          path: salida/EcoRuta-puente.zip
+
+      - name: Adjuntar el puente a la Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: salida/EcoRuta-puente.zip
