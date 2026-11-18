@@ -1,0 +1,14 @@
+{
+  "port": 3000,
+  "pin": "",
+  "geminiApiKey": "",
+  "geminiModel": "gemini-2.5-flash",
+  "contact": "tu-correo@ejemplo.com",
+  "tileUrl": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  "tileCacheDays": 30,
+
+  "tunnel": "",
+  "tunnelToken": "",
+  "publicUrl": "",
+  "requireLink": null
+}
