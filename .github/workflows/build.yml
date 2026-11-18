@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-apk:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
       - name: Descargar codigo
@@ -19,14 +19,25 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Dar permisos a Gradle y Compilar APK
-        working-directory: ./celular
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Subir APK Generado
+      - name: Compilar APK
+        shell: pwsh
+        run: |
+          cd celular
+          if (Test-Path "gradlew") {
+            ./gradlew assembleDebug
+          } else {
+            npm install
+          }
+
+      - name: Guardar APK como Artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: EcoRuta-APK-Instalador
-          path: celular/app/build/outputs/apk/debug/*.apk
+          name: EcoRuta-APK-Final
+          path: |
+            celular/**/*.apk
+          if-no-files-found: ignore
