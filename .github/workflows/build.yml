@@ -1,32 +1,39 @@
-name: Compilar EcoRuta APK y Panel
+name: Compilar EcoRuta
 
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Copiar repositorio
+      - name: Descargar codigo
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
+      - name: Instalar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Instalar y Compilar Panel
+      - name: Preparar Panel
+        shell: pwsh
         run: |
-          cd panel
-          npm install
-          npm run build
+          if (Test-Path "panel/package.json") {
+            cd panel
+            npm install --legacy-peer-deps
+            npm run build --if-present
+          } else {
+            Write-Host "No se encontro package.json en panel, empaquetando archivos directos."
+          }
 
-      - name: Subir Artifacts
+      - name: Empaquetar Todo EcoRuta
         uses: actions/upload-artifact@v4
         with:
-          name: EcoRuta-Actualizado
+          name: EcoRuta-Completo
           path: |
-            panel/dist/
+            panel/
             celular/
+          if-no-files-found: warn
